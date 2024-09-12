@@ -1,0 +1,77 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head th:replace="~{fragmentos :: cabecalho('Price Whisper')}" />
+<body>
+<div class="container">
+  <a th:href="@{/}" style="text-decoration: none; color: #000000;">
+    <h1 class="text-center">Price Whisper</h1>
+    <h3 class="text-center">Retornar</h3>
+  </a>
+
+  <form th:object="${produto}" th:action="@{/atualizar-produto/{idProduto}(idProduto = ${produto.id})}" method="post">
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label" for="nome">Nome</label>
+        <input type="text" id="nome" class="form-control" th:field="*{nome}">
+      </div>
+      <div class="col">
+        <label class="form-label" for="descricao">Descrição</label>
+        <textarea class="form-control" id="descricao" rows="3" th:field="*{descricao}"></textarea>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <label class="form-label" for="preco-custo">Preço de Custo</label>
+        <input type="text" id="preco-custo" class="form-control" th:field="*{precoCusto}">
+      </div>
+
+      <div class="col-2">
+        <label class="form-label" for="preco-venda">Preço de Venda</label>
+        <input type="text" id="preco-venda" class="form-control" th:field="*{precoVenda}">
+      </div>
+
+      <div class="col-2">
+        <label class="form-label" for="preco-minimo">Preço Mínimo</label>
+        <input type="text" id="preco-minimo" class="form-control" th:field="*{precoMinimo}">
+      </div>
+
+      <div class="col">
+        <label class="form-label" for="estoque">Estoque</label>
+        <input type="text" id="estoque" class="form-control" th:field="*{estoque}">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label" for="categoria">Categoria</label>
+        <select class="form-select" th:field="*{categoria}" id="categoria">
+          <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nome}">
+        </select>
+      </div>
+      <div class="col">
+        <label class="form-label" for="modelo">Modelo</label>
+        <select class="form-select" th:field="*{categoria}" id="modelo">
+          <option th:each="modelo : ${modelos}" th:value="${modelo.id}" th:text="${modelo.nome}">
+        </select>
+      </div>
+    </div>
+
+    <div class="row mt-3 ">
+      <button type="submit" class="btn btn-dark col-3">Salvar Produto</button>
+    </div>
+
+  </form>
+
+  <footer class="bg-body-tertiary text-center text-lg-start fixed-bottom">
+    <div class="text-center p-3">
+      © 2024 OMCorp
+    </div>
+  </footer>
+</div>
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</body>
+</html>

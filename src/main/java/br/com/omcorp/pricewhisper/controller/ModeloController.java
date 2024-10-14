@@ -1,11 +1,9 @@
 package br.com.omcorp.pricewhisper.controller;
 
-import br.com.omcorp.pricewhisper.model.Categoria;
 import br.com.omcorp.pricewhisper.model.Marca;
 import br.com.omcorp.pricewhisper.model.Modelo;
-import br.com.omcorp.pricewhisper.model.Produto;
-import br.com.omcorp.pricewhisper.repository.MarcaRepository;
-import br.com.omcorp.pricewhisper.repository.ModeloRepository;
+import br.com.omcorp.pricewhisper.services.MarcaService;
+import br.com.omcorp.pricewhisper.services.ModeloService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -16,28 +14,28 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/modelos")
 public class ModeloController {
 
     @Autowired
-    private ModeloRepository repModelo;
+    private ModeloService service;
 
     @Autowired
-    private MarcaRepository repMarca;
+    private MarcaService marcaService;
 
-    @GetMapping("/modelos-interface")
-    public ModelAndView modelosInterface() {
-        List<Modelo> modelos = repModelo.findAll();
+    @GetMapping()
+    public ModelAndView modelosList() {
+        List<Modelo> modelos = service.getAll();
 
-        ModelAndView mv = new ModelAndView("modelos-interface");
+        ModelAndView mv = new ModelAndView("modelos-list");
         mv.addObject("modelos", modelos);
 
         return mv;
     }
 
-    @GetMapping("/novo-modelo")
-    public ModelAndView novoModelo() {
-        List<Marca> marcas = repMarca.findAll();
+    @GetMapping("/form_novo_modelo")
+    public ModelAndView formNovoModelo() {
+        List<Marca> marcas = marcaService.getAll();
 
         ModelAndView mv = new ModelAndView("form-modelo");
         mv.addObject("modelo", new Modelo());
@@ -46,68 +44,59 @@ public class ModeloController {
         return mv;
     }
 
-    @PostMapping("/inserir-modelo")
-    public ModelAndView inserirModelo(@Valid Modelo modelo, BindingResult bd) {
-        if (bd.hasErrors()) {
-            return novoModelo();
-        } else {
-            repModelo.save(modelo);
-            return modelosInterface();
+    @GetMapping("/form_editar_modelo/{id}")
+    public ModelAndView formEditarModelo(@PathVariable Long id) {
+        Optional<Modelo> op = service.getById(id);
+
+        if (op.isEmpty()) {
+            return new ModelAndView("redirect:/modelos");
         }
+
+        Modelo modelo = op.get();
+        List<Marca> marcas = marcaService.getAll();
+
+        ModelAndView mv = new ModelAndView("form-modelo-editar");
+        mv.addObject("modelo", modelo);
+        mv.addObject("marcas", marcas);
+
+        return mv;
     }
 
-    @GetMapping("/editar-modelo/{id}")
-    public ModelAndView editarModelo(@PathVariable Long id) {
+    @PostMapping("/api/save")
+    public ModelAndView saveModelo(@Valid Modelo modelo, BindingResult bd) {
+        if (bd.hasErrors()) {
+            return new ModelAndView("redirect:/modelos/form_novo_modelo");
+        }
 
-        Optional<Modelo> op = repModelo.findById(id);
+        service.save(modelo);
+        return new ModelAndView("redirect:/modelos");
+    }
+
+    @PostMapping("/api/update/{id}")
+    public ModelAndView updateModelo(@PathVariable Long id, @Valid Modelo modelo, BindingResult bd) {
+        if (bd.hasErrors()) {
+            return new ModelAndView("redirect:/modelos/form_novo_modelo");
+        }
+        
+        Optional<Modelo> op = service.getById(id);
+
+        if (op.isEmpty()) {
+            return new ModelAndView("redirect:/modelos/form_editar_modelo/" + id);
+        }
+        
+        Modelo modeloNovo = op.get();
+        service.update(modeloNovo, modelo);
+        return new ModelAndView("redirect:/modelos");
+    }
+
+    @GetMapping("/api/delete/{id}")
+    public ModelAndView deleteModelo(@PathVariable Long id) {
+        Optional<Modelo> op = service.getById(id);
 
         if (op.isPresent()) {
-            Modelo modelo = op.get();
-
-            List<Marca> marcas = repMarca.findAll();
-
-            ModelAndView mv = new ModelAndView("form-modelo-editar");
-            mv.addObject("modelo", modelo);
-            mv.addObject("marcas", marcas);
-
-            return mv;
-        } else {
-            return modelosInterface();
+            service.delete(id);
         }
-    }
-
-    @PostMapping("/atualizar-modelo/{id}")
-    public ModelAndView atualizarModelo(@PathVariable Long id, @Valid Modelo modelo, BindingResult bd) {
-        if (bd.hasErrors()) {
-            return novoModelo();
-        } else {
-            Optional<Modelo> op = repModelo.findById(id);
-
-            if (op.isPresent()) {
-                Modelo modeloNovo = op.get();
-
-                modeloNovo.setNome(modelo.getNome());
-                modeloNovo.setDescricao(modelo.getDescricao());
-                modeloNovo.setMarca(modelo.getMarca());
-
-                repModelo.save(modeloNovo);
-                return modelosInterface();
-            } else {
-                return editarModelo(id);
-            }
-
-        }
-    }
-
-    @GetMapping("/deletar-modelo/{id}")
-    public ModelAndView deletarModelo(@PathVariable Long id) {
-        Optional<Modelo> op = repModelo.findById(id);
-
-        if (op.isPresent()) {
-            repModelo.deleteById(id);
-            return modelosInterface();
-        } else {
-            return modelosInterface();
-        }
+        
+        return new ModelAndView("redirect:/modelos");
     }
 }

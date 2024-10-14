@@ -8,7 +8,7 @@
     <h3 class="text-center">Retornar</h3>
   </a>
 
-  <form th:object="${marca}" th:action="@{/atualizar-marca/{idMarca}(idMarca = ${marca.id})}" method="post">
+  <form th:object="${marca}" th:action="@{/marcas/api/update/{idMarca}(idMarca = ${marca.id})}" method="post">
 
     <div class="row">
       <div class="col">

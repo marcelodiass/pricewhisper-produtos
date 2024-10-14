@@ -24,10 +24,10 @@
           <td class="col" th:text="${marca.id}"></td>
           <td class="col" th:text="${marca.nome}"></td>
           <td class="col-2">
-            <a th:href="@{/editar-marca/{idMarca}(idMarca = ${marca.id})}">Editar</a>
+            <a th:href="@{/marcas/form_editar_marca/{idMarca}(idMarca = ${marca.id})}">Editar</a>
           </td>
           <td class="col-2">
-            <a th:href="@{/deletar-marca/{idMarca}(idMarca = ${marca.id})}">Deletar</a>
+            <a th:href="@{/marcas/api/delete/{idMarca}(idMarca = ${marca.id})}">Deletar</a>
           </td>
         </tr>
         </tbody>
@@ -37,7 +37,7 @@
 
 
   <div class="row">
-    <a th:href="@{/nova-marca}" class="btn btn-dark col-3">Nova Marca</a>
+    <a th:href="@{/marcas/form_nova_marca}" class="btn btn-dark col-3">Nova Marca</a>
   </div>
 
 

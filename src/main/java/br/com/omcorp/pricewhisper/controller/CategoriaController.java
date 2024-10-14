@@ -1,9 +1,7 @@
 package br.com.omcorp.pricewhisper.controller;
 
 import br.com.omcorp.pricewhisper.model.Categoria;
-import br.com.omcorp.pricewhisper.model.Marca;
-import br.com.omcorp.pricewhisper.model.Modelo;
-import br.com.omcorp.pricewhisper.repository.CategoriaRepository;
+import br.com.omcorp.pricewhisper.services.CategoriaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -14,89 +12,82 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/categorias")
 public class CategoriaController {
 
     @Autowired
-    private CategoriaRepository repCategoria;
+    private CategoriaService service;
 
-    @GetMapping("/categorias-interface")
-    public ModelAndView categoriaInterface() {
-        List<Categoria> categorias = repCategoria.findAll();
+    @GetMapping()
+    public ModelAndView categoriasList() {
+        List<Categoria> categorias = service.getAll();
 
-        ModelAndView mv = new ModelAndView("categorias-interface");
+        ModelAndView mv = new ModelAndView("categorias-list");
         mv.addObject("categorias", categorias);
 
         return mv;
     }
 
-    @GetMapping("/nova-categoria")
-    public ModelAndView novaCategoria() {
+    @GetMapping("/form_nova_categoria")
+    public ModelAndView formNovaCategoria() {
         ModelAndView mv = new ModelAndView("form-categoria");
         mv.addObject("categoria", new Categoria());
+        return mv;
+    }
+
+    @GetMapping("/form_editar_categoria/{id}")
+    public ModelAndView formEditarCategoria(@PathVariable Long id) {
+        Optional<Categoria> op = service.getById(id);
+
+        if (op.isEmpty()) {
+            return new ModelAndView("redirect:/categorias");
+        }
+        
+        Categoria categoria = op.get();
+
+        ModelAndView mv = new ModelAndView("form-categoria-editar");
+        mv.addObject("categoria", categoria);
 
         return mv;
     }
 
-    @PostMapping("/inserir-categoria")
-    public ModelAndView inserirCategoria(@Valid Categoria categoria, BindingResult bd) {
+    @PostMapping("/api/save")
+    public ModelAndView saveCategoria(@Valid Categoria categoria, BindingResult bd) {
         if (bd.hasErrors()) {
-            return novaCategoria();
-        } else {
-            repCategoria.save(categoria);
-            return categoriaInterface();
+            return new ModelAndView("redirect:/form_nova_categoria");
         }
+
+        service.save(categoria);
+        return new ModelAndView("redirect:/categorias");
     }
 
-    @GetMapping("/editar-categoria/{id}")
-    public ModelAndView editarCategoria(@PathVariable Long id) {
+    @PostMapping("/api/update/{id}")
+    public ModelAndView updateCategoria(@PathVariable Long id, @Valid Categoria categoria, BindingResult bd) {
+        if (bd.hasErrors()) {
+            return new ModelAndView("redirect:/categorias/form_nova_categoria");
+        }
 
-        Optional<Categoria> op = repCategoria.findById(id);
+        Optional<Categoria> op = service.getById(id);
+
+        if (op.isEmpty()) {
+            return new ModelAndView("redirect:/categorias/form_editar_categoria/" + id);
+        }
+
+        Categoria categoriaNova = op.get();
+        service.update(categoriaNova, categoria);
+        
+        return new ModelAndView("redirect:/categorias");
+    }
+
+    @GetMapping("/api/delete/{id}")
+    public ModelAndView deleteCategoria(@PathVariable Long id) {
+        Optional<Categoria> op = service.getById(id);
 
         if (op.isPresent()) {
-            Categoria categoria = op.get();
-
-            ModelAndView mv = new ModelAndView("form-categoria-editar");
-            mv.addObject("categoria", categoria);
-
-            return mv;
-        } else {
-            return categoriaInterface();
+            service.delete(id);
         }
-    }
 
-    @PostMapping("/atualizar-categoria/{id}")
-    public ModelAndView atualizarCategoria(@PathVariable Long id, @Valid Categoria categoria, BindingResult bd) {
-        if (bd.hasErrors()) {
-            return novaCategoria();
-        } else {
-            Optional<Categoria> op = repCategoria.findById(id);
-
-            if (op.isPresent()) {
-                Categoria categoriaNova = op.get();
-
-                categoriaNova.setNome(categoria.getNome());
-                categoriaNova.setDescricao(categoria.getDescricao());
-
-                repCategoria.save(categoriaNova);
-                return categoriaInterface();
-            } else {
-                return editarCategoria(id);
-            }
-
-        }
-    }
-
-    @GetMapping("/deletar-categoria/{id}")
-    public ModelAndView deletarCategoria(@PathVariable Long id) {
-        Optional<Categoria> op = repCategoria.findById(id);
-
-        if (op.isPresent()) {
-            repCategoria.deleteById(id);
-            return categoriaInterface();
-        } else {
-            return categoriaInterface();
-        }
+        return new ModelAndView("redirect:/categorias");
     }
 
 }

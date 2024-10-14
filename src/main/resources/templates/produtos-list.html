@@ -30,10 +30,10 @@
             <td class="col-3" th:text="${produto.estoque}"></td>
             <td class="col-3" th:text="${produto.categoria.nome}"></td>
             <td class="col-3">
-              <a th:href="@{/editar-produto/{idProduto}(idProduto = ${produto.id})}">Editar</a>
+              <a th:href="@{/produtos/form_editar_produto/{idProduto}(idProduto = ${produto.id})}">Editar</a>
             </td>
             <td class="col-3">
-              <a  th:href="@{/deletar-produto/{idProduto}(idProduto = ${produto.id})}">Deletar</a>
+              <a  th:href="@{/produtos/api/delete/{idProduto}(idProduto = ${produto.id})}">Deletar</a>
             </td>
           </tr>
         </tbody>
@@ -42,7 +42,7 @@
   </div>
 
   <div class="row">
-    <a th:href="@{/novo-produto}" class="btn btn-dark col-3">Novo Produto</a>
+    <a th:href="@{/produtos/form_novo_produto}" class="btn btn-dark col-3">Novo Produto</a>
   </div>
 
   <footer class="bg-body-tertiary text-center text-lg-start fixed-bottom">

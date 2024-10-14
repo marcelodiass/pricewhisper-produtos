@@ -9,6 +9,9 @@
 | Gustavo Imparato Chaves     | RM551988 |
 | Gabriel Eringer de Oliveira | RM99632  |
 
+## Tabelas DDL
+[Clique aqui para acessar o arquivo txt das tabelas DDL](docs/tabelas_ddl.txt)
+
 ## [Vídeo Demo](https://youtu.be/xMzcw9Uim-g)
 
 https://youtu.be/xMzcw9Uim-g

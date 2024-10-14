@@ -3,9 +3,9 @@ package br.com.omcorp.pricewhisper.controller;
 import br.com.omcorp.pricewhisper.model.Categoria;
 import br.com.omcorp.pricewhisper.model.Modelo;
 import br.com.omcorp.pricewhisper.model.Produto;
-import br.com.omcorp.pricewhisper.repository.ProdutoRepository;
 import br.com.omcorp.pricewhisper.services.CategoriaService;
 import br.com.omcorp.pricewhisper.services.ModeloService;
+import br.com.omcorp.pricewhisper.services.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -20,17 +20,17 @@ import java.util.Optional;
 public class ProdutoController {
 
     @Autowired
-    private ProdutoRepository repProdutos;
-    
+    private ProdutoService service;
+
     @Autowired
     private CategoriaService categoriaService;
-    
+
     @Autowired
     private ModeloService modeloService;
 
     @GetMapping()
     public ModelAndView produtosList() {
-        List<Produto> listaProdutos = repProdutos.findAll();
+        List<Produto> listaProdutos = service.getAll();
 
         ModelAndView mv = new ModelAndView("produtos-list");
         mv.addObject("produtos", listaProdutos);
@@ -53,72 +53,60 @@ public class ProdutoController {
 
     @GetMapping("/form_editar_produto/{id}")
     public ModelAndView formEditarProduto(@PathVariable Long id) {
+        Optional<Produto> op = service.getById(id);
 
-        Optional<Produto> op = repProdutos.findById(id);
-
-        if (op.isPresent()) {
-            Produto produto = op.get();
-
-            List<Categoria> listaCategorias = categoriaService.getAll();
-            List<Modelo> listaModelos = modeloService.getAll();
-
-            ModelAndView mv = new ModelAndView("form-produto-editar");
-            mv.addObject("produto", produto);
-            mv.addObject("categorias", listaCategorias);
-            mv.addObject("modelos", listaModelos);
-
-            return mv;
-        } else {
+        if (op.isEmpty()) {
             return new ModelAndView("redirect:/produtos");
         }
+        
+        Produto produto = op.get();
+
+        List<Categoria> listaCategorias = categoriaService.getAll();
+        List<Modelo> listaModelos = modeloService.getAll();
+
+        ModelAndView mv = new ModelAndView("form-produto-editar");
+        mv.addObject("produto", produto);
+        mv.addObject("categorias", listaCategorias);
+        mv.addObject("modelos", listaModelos);
+
+        return mv;
     }
 
     @PostMapping("/api/save")
     public ModelAndView saveProduto(@Valid Produto produto, BindingResult bd) {
-
         if (bd.hasErrors()) {
             return new ModelAndView("redirect:/produtos/form_novo_produto");
-        } else {
-            repProdutos.save(produto);
-            return new ModelAndView("redirect:/produtos");
         }
+        
+        service.save(produto);
+        return new ModelAndView("redirect:/produtos");
     }
 
     @PostMapping("/api/update/{id}")
     public ModelAndView updateProduto(@PathVariable Long id, @Valid Produto produto, BindingResult bd) {
         if (bd.hasErrors()) {
             return new ModelAndView("redirect:/produtos/form_novo_produto");
-        } else {
-            Optional<Produto> op = repProdutos.findById(id);
-
-            if (op.isPresent()) {
-                Produto produtoNovo = op.get();
-
-                produtoNovo.setNome(produto.getNome());
-                produtoNovo.setDescricao(produto.getDescricao());
-                produtoNovo.setPrecoCusto(produto.getPrecoCusto());
-                produtoNovo.setPrecoVenda(produto.getPrecoVenda());
-                produtoNovo.setPrecoMinimo(produto.getPrecoMinimo());
-                produtoNovo.setEstoque(produto.getEstoque());
-                produtoNovo.setModelo(produto.getModelo());
-                produtoNovo.setCategoria(produto.getCategoria());
-
-                repProdutos.save(produtoNovo);
-                return new ModelAndView("redirect:/produtos");
-            } else {
-                return new ModelAndView("redirect:/produtos/form_editar_produto/" + id);
-            }
-
         }
+        
+        Optional<Produto> op = service.getById(id);
+
+        if (op.isEmpty()) {
+            return new ModelAndView("redirect:/produtos/form_editar_produto/" + id);
+        }
+
+        Produto produtoNovo = op.get();
+        service.update(produtoNovo, produto);
+        return new ModelAndView("redirect:/produtos");
     }
 
     @GetMapping("/api/delete/{id}")
     public ModelAndView deleteProduto(@PathVariable Long id) {
-        Optional<Produto> op = repProdutos.findById(id);
+        Optional<Produto> op = service.getById(id);
 
         if (op.isPresent()) {
-            repProdutos.deleteById(id);
+            service.delete(id);
         }
+        
         return new ModelAndView("redirect:/produtos");
     }
 }

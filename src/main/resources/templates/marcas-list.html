@@ -7,6 +7,33 @@
 
 <div class="container">
   <div class="row">
+    <div id="alert-cadastrar-marca-sucesso"
+         class="alert alert-success"
+         th:if="${param.registrado}"
+         role="alert">
+      Marca cadastrada com sucesso!
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="alert-atualizar-marca-sucesso"
+         class="alert alert-success"
+         th:if="${param.atualizado}"
+         role="alert">
+      Marca atualizada com sucesso!
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="alert-deletar-marca-sucesso"
+         class="alert alert-success"
+         th:if="${param.deletado}"
+         role="alert">
+      Marca deletada com sucesso!
+    </div>
+  </div>
+  
+  <div class="row">
     <div class="col-12">
       <table class="table table-hover">
         <thead>
@@ -34,7 +61,7 @@
   </div>
   
   <div class="row">
-    <a th:href="@{/marcas/form_nova_marca}" class="btn btn-dark col-3">Nova Marca</a>
+    <a th:href="@{/marcas/form_nova_marca}" class="btn btn-primary col-3">Nova Marca</a>
   </div>
 </div>
 

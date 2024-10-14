@@ -6,42 +6,70 @@
 <header th:replace="~{fragmentos :: navbar}"></header>
 
 <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <table class="table table-hover">
-        <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Editar</th>
-          <th scope="col">Deletar</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="categoria : ${categorias}">
-          <td class="col" th:text="${categoria.id}"></td>
-          <td class="col" th:text="${categoria.nome}"></td>
-          <td class="col-2">
-            <a th:href="@{/categorias/form_editar_categoria/{idCategoria}(idCategoria = ${categoria.id})}">Editar</a>
-          </td>
-          <td class="col-2">
-            <a th:href="@{/categorias/api/delete/{idCategoria}(idCategoria = ${categoria.id})}">Deletar</a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+    <div class="row">
+        <div id="alert-cadastrar-categoria-sucesso"
+             class="alert alert-success"
+             th:if="${param.registrado}"
+             role="alert">
+            Categoria cadastrada com sucesso!
+        </div>
     </div>
-  </div>
 
+    <div class="row">
+        <div id="alert-atualizar-categoria-sucesso"
+             class="alert alert-success"
+             th:if="${param.atualizado}"
+             role="alert">
+            Categoria atualizada com sucesso!
+        </div>
+    </div>
 
-  <div class="row">
-    <a th:href="@{/categorias/form_nova_categoria}" class="btn btn-dark col-3">Nova Categoria</a>
-  </div>
+    <div class="row">
+        <div id="alert-deletar-categoria-sucesso"
+             class="alert alert-success"
+             th:if="${param.deletado}"
+             role="alert">
+            Categoria deletada com sucesso!
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Deletar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="categoria : ${categorias}">
+                    <td class="col" th:text="${categoria.id}"></td>
+                    <td class="col" th:text="${categoria.nome}"></td>
+                    <td class="col-2">
+                        <a th:href="@{/categorias/form_editar_categoria/{idCategoria}(idCategoria = ${categoria.id})}">Editar</a>
+                    </td>
+                    <td class="col-2">
+                        <a th:href="@{/categorias/api/delete/{idCategoria}(idCategoria = ${categoria.id})}">Deletar</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <a th:href="@{/categorias/form_nova_categoria}" class="btn btn-primary col-3">Nova Categoria</a>
+    </div>
 </div>
 
 <footer th:replace="~{fragmentos :: rodape}"></footer>
 
 <!-- Option 1: Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
 </body>
 </html>

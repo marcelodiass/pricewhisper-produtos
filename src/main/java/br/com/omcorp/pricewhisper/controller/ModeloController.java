@@ -69,7 +69,7 @@ public class ModeloController {
         }
 
         service.save(modelo);
-        return new ModelAndView("redirect:/modelos");
+        return new ModelAndView("redirect:/modelos?registrado=true");
     }
 
     @PostMapping("/api/update/{id}")
@@ -86,7 +86,7 @@ public class ModeloController {
         
         Modelo modeloNovo = op.get();
         service.update(modeloNovo, modelo);
-        return new ModelAndView("redirect:/modelos");
+        return new ModelAndView("redirect:/modelos?atualizado=true");
     }
 
     @GetMapping("/api/delete/{id}")
@@ -97,6 +97,6 @@ public class ModeloController {
             service.delete(id);
         }
         
-        return new ModelAndView("redirect:/modelos");
+        return new ModelAndView("redirect:/modelos?deletado=true");
     }
 }

@@ -7,6 +7,33 @@
 
 <div class="container">
     <div class="row">
+        <div id="alert-cadastrar-modelo-sucesso"
+             class="alert alert-success"
+             th:if="${param.registrado}"
+             role="alert">
+            Modelo cadastrado com sucesso!
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="alert-atualizar-modelo-sucesso"
+             class="alert alert-success"
+             th:if="${param.atualizado}"
+             role="alert">
+            Modelo atualizado com sucesso!
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="alert-deletar-modelo-sucesso"
+             class="alert alert-success"
+             th:if="${param.deletado}"
+             role="alert">
+            Modelo deletado com sucesso!
+        </div>
+    </div>
+    
+    <div class="row">
         <div class="col-12">
             <table class="table table-hover">
                 <thead>
@@ -36,7 +63,7 @@
     </div>
     
     <div class="row">
-        <a th:href="@{/modelos/form_novo_modelo}" class="btn btn-dark col-3">Novo Modelo</a>
+        <a th:href="@{/modelos/form_novo_modelo}" class="btn btn-primary col-3">Novo Modelo</a>
     </div>
 </div>
 

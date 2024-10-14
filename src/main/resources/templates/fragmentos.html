@@ -6,4 +6,50 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
   <title th:text="${parametro}">AQUI!</title>
+  
+  <style>
+    .bg-omcorp {
+      background: #282C46;
+    }
+    
+    .navbar-omcorp {
+      min-height: 4rem;
+      background: #282C46;
+    }
+  </style>
 </head>
+
+<header th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark navbar-omcorp mb-4">
+
+  <div class="container flex-row bd-navbar">
+    <a class="navbar-brand text-white" href="/">Price Whisper</a>
+
+    <div class="navbar-nav-scroll">
+      <ul class="navbar-nav bd-navbar flex-row">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/produtos">Produtos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/modelos">Modelos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/marcas">Marcas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/categorias">Categorias</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<footer th:fragment="rodape" class="bg-body-tertiary text-center text-lg-start fixed-bottom">
+  <div class="text-center p-3">
+    © 2024 OMCorp
+  </div>
+</footer>
+
+<a th:fragment="btn-link(href, text)" 
+   th:href="${href}" 
+   th:text="${text}"
+   class="btn btn-dark bg-omcorp d-flex justify-content-center"></a>

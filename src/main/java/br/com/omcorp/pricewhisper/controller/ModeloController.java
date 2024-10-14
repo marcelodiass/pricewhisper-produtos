@@ -63,9 +63,15 @@ public class ModeloController {
     }
 
     @PostMapping("/api/save")
-    public ModelAndView saveModelo(@Valid Modelo modelo, BindingResult bd) {
+    public ModelAndView saveModelo(@Valid @ModelAttribute("modelo") Modelo modelo, BindingResult bd) {
         if (bd.hasErrors()) {
-            return new ModelAndView("redirect:/modelos/form_novo_modelo");
+            List<Marca> marcas = marcaService.getAll();
+
+            ModelAndView mv = new ModelAndView("form-modelo");
+            mv.addObject("modelo", modelo);
+            mv.addObject("marcas", marcas);
+
+            return mv;
         }
 
         service.save(modelo);
@@ -73,9 +79,15 @@ public class ModeloController {
     }
 
     @PostMapping("/api/update/{id}")
-    public ModelAndView updateModelo(@PathVariable Long id, @Valid Modelo modelo, BindingResult bd) {
+    public ModelAndView updateModelo(@PathVariable Long id, @Valid @ModelAttribute("modelo") Modelo modelo, BindingResult bd) {
         if (bd.hasErrors()) {
-            return new ModelAndView("redirect:/modelos/form_novo_modelo");
+            List<Marca> marcas = marcaService.getAll();
+
+            ModelAndView mv = new ModelAndView("form-modelo-editar");
+            mv.addObject("modelo", modelo);
+            mv.addObject("marcas", marcas);
+
+            return mv;
         }
         
         Optional<Modelo> op = service.getById(id);

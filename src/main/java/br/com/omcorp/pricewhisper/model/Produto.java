@@ -3,6 +3,9 @@ package br.com.omcorp.pricewhisper.model;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
@@ -14,16 +17,25 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Não é possível cadastrar um produto sem nome!")
     private String nome;
 
     private String descricao;
 
+    @NotNull(message = "Não é possível cadastrar um produto sem o preço de custo!")
+    @DecimalMin(value = "0", message = "O preço de custo não pode ser negativo!")
     private BigDecimal precoCusto;
 
+    @NotNull(message = "Não é possível cadastrar um produto sem o preço de venda!")
+    @DecimalMin(value = "0", message = "O preço de venda não pode ser negativo!")
     private BigDecimal precoVenda;
 
+    @NotNull(message = "Não é possível cadastrar um produto sem o preço mínimo!")
+    @DecimalMin(value = "0", message = "O preço mínimo não pode ser negativo!")
     private BigDecimal precoMinimo;
 
+    @NotNull(message = "Não é possível cadastrar um produto sem estoque!")
+    @DecimalMin(value = "0", message = "O estoque não pode ser negativo!")
     private Integer estoque;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})

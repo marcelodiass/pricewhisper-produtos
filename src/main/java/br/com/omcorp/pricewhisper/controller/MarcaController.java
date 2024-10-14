@@ -32,7 +32,6 @@ public class MarcaController {
     public ModelAndView formNovaMarca() {
         ModelAndView mv = new ModelAndView("form-marca");
         mv.addObject("marca", new Marca());
-
         return mv;
     }
 
@@ -53,9 +52,11 @@ public class MarcaController {
     }
 
     @PostMapping("/api/save")
-    public ModelAndView saveMarca(@Valid Marca marca, BindingResult bd) {
+    public ModelAndView saveMarca(@Valid @ModelAttribute("marca") Marca marca, BindingResult bd) {
         if (bd.hasErrors()) {
-            return new ModelAndView("redirect:/marcas/form_nova_marca");
+            ModelAndView mv = new ModelAndView("form-marca");
+            mv.addObject("marca", marca);
+            return mv;
         }
 
         service.save(marca);
@@ -63,9 +64,11 @@ public class MarcaController {
     }
 
     @PostMapping("/api/update/{id}")
-    public ModelAndView updateMarca(@PathVariable Long id, @Valid Marca marca, BindingResult bd) {
+    public ModelAndView updateMarca(@PathVariable Long id, @Valid @ModelAttribute("marca") Marca marca, BindingResult bd) {
         if (bd.hasErrors()) {
-            return new ModelAndView("redirect:/marcas/form_nova_marca");
+            ModelAndView mv = new ModelAndView("form-marca-editar");
+            mv.addObject("marca", marca);
+            return mv;
         }
 
         Optional<Marca> op = service.getById(id);

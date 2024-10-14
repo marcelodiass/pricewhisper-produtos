@@ -16,34 +16,30 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/produtos")
 public class ProdutoController {
 
     @Autowired
     private ProdutoRepository repProdutos;
+    
     @Autowired
     private CategoriaRepository repCategorias;
+    
     @Autowired
     private ModeloRepository repModelo;
 
-
-    @GetMapping
-    public ModelAndView index() {
-        return new ModelAndView("index");
-    }
-
-    @GetMapping("/produtos-interface")
-    public ModelAndView produtosInterface() {
+    @GetMapping()
+    public ModelAndView produtosList() {
         List<Produto> listaProdutos = repProdutos.findAll();
 
-        ModelAndView mv = new ModelAndView("produtos-interface");
+        ModelAndView mv = new ModelAndView("produtos-list");
         mv.addObject("produtos", listaProdutos);
 
         return mv;
     }
 
-    @GetMapping("/novo-produto")
-    public ModelAndView novoProduto() {
+    @GetMapping("/form_novo_produto")
+    public ModelAndView formNovoProduto() {
         List<Categoria> listaCategorias = repCategorias.findAll();
         List<Modelo> listaModelos = repModelo.findAll();
 
@@ -55,19 +51,8 @@ public class ProdutoController {
         return mv;
     }
 
-    @PostMapping("/inserir-produto")
-    public ModelAndView inserirProduto(@Valid Produto produto, BindingResult bd) {
-
-        if (bd.hasErrors()) {
-            return novoProduto();
-        } else {
-            repProdutos.save(produto);
-            return new ModelAndView("redirect:/produtos-interface");
-        }
-    }
-
-    @GetMapping("/editar-produto/{id}")
-    public ModelAndView editarProduto(@PathVariable Long id) {
+    @GetMapping("/form_editar_produto/{id}")
+    public ModelAndView formEditarProduto(@PathVariable Long id) {
 
         Optional<Produto> op = repProdutos.findById(id);
 
@@ -84,14 +69,25 @@ public class ProdutoController {
 
             return mv;
         } else {
-            return produtosInterface();
+            return new ModelAndView("redirect:/produtos");
         }
     }
 
-    @PostMapping("/atualizar-produto/{id}")
-    public ModelAndView atualizarProduto(@PathVariable Long id, @Valid Produto produto, BindingResult bd) {
+    @PostMapping("/api/save")
+    public ModelAndView saveProduto(@Valid Produto produto, BindingResult bd) {
+
         if (bd.hasErrors()) {
-            return novoProduto();
+            return new ModelAndView("redirect:/produtos/form_novo_produto");
+        } else {
+            repProdutos.save(produto);
+            return new ModelAndView("redirect:/produtos");
+        }
+    }
+
+    @PostMapping("/api/update/{id}")
+    public ModelAndView updateProduto(@PathVariable Long id, @Valid Produto produto, BindingResult bd) {
+        if (bd.hasErrors()) {
+            return new ModelAndView("redirect:/produtos/form_novo_produto");
         } else {
             Optional<Produto> op = repProdutos.findById(id);
 
@@ -108,23 +104,21 @@ public class ProdutoController {
                 produtoNovo.setCategoria(produto.getCategoria());
 
                 repProdutos.save(produtoNovo);
-                return produtosInterface();
+                return new ModelAndView("redirect:/produtos");
             } else {
-                return editarProduto(id);
+                return new ModelAndView("redirect:/produtos/form_editar_produto/" + id);
             }
 
         }
     }
 
-    @GetMapping("/deletar-produto/{id}")
-    public ModelAndView deletarProduto(@PathVariable Long id) {
+    @GetMapping("/api/delete/{id}")
+    public ModelAndView deleteProduto(@PathVariable Long id) {
         Optional<Produto> op = repProdutos.findById(id);
 
         if (op.isPresent()) {
             repProdutos.deleteById(id);
-            return produtosInterface();
-        } else {
-            return produtosInterface();
         }
+        return new ModelAndView("redirect:/produtos");
     }
 }

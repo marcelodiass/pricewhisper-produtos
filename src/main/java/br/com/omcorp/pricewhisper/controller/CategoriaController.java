@@ -58,7 +58,7 @@ public class CategoriaController {
         }
 
         service.save(categoria);
-        return new ModelAndView("redirect:/categorias");
+        return new ModelAndView("redirect:/categorias?registrado=true");
     }
 
     @PostMapping("/api/update/{id}")
@@ -76,7 +76,7 @@ public class CategoriaController {
         Categoria categoriaNova = op.get();
         service.update(categoriaNova, categoria);
         
-        return new ModelAndView("redirect:/categorias");
+        return new ModelAndView("redirect:/categorias?atualizado=true");
     }
 
     @GetMapping("/api/delete/{id}")
@@ -87,7 +87,7 @@ public class CategoriaController {
             service.delete(id);
         }
 
-        return new ModelAndView("redirect:/categorias");
+        return new ModelAndView("redirect:/categorias?deletado=true");
     }
 
 }

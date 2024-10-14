@@ -79,7 +79,7 @@ public class ProdutoController {
         }
         
         service.save(produto);
-        return new ModelAndView("redirect:/produtos");
+        return new ModelAndView("redirect:/produtos?registrado=true");
     }
 
     @PostMapping("/api/update/{id}")
@@ -96,7 +96,7 @@ public class ProdutoController {
 
         Produto produtoNovo = op.get();
         service.update(produtoNovo, produto);
-        return new ModelAndView("redirect:/produtos");
+        return new ModelAndView("redirect:/produtos?atualizado=true");
     }
 
     @GetMapping("/api/delete/{id}")
@@ -107,6 +107,6 @@ public class ProdutoController {
             service.delete(id);
         }
         
-        return new ModelAndView("redirect:/produtos");
+        return new ModelAndView("redirect:/produtos?deletado=true");
     }
 }

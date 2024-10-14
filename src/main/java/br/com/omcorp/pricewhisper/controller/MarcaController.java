@@ -59,7 +59,7 @@ public class MarcaController {
         }
 
         service.save(marca);
-        return new ModelAndView("redirect:/marcas");
+        return new ModelAndView("redirect:/marcas?registrado=true");
     }
 
     @PostMapping("/api/update/{id}")
@@ -76,7 +76,7 @@ public class MarcaController {
 
         Marca marcaNova = op.get();
         service.update(marcaNova, marca);
-        return new ModelAndView("redirect:/marcas");
+        return new ModelAndView("redirect:/marcas?atualizado=true");
     }
 
     @GetMapping("/api/delete/{id}")
@@ -87,6 +87,6 @@ public class MarcaController {
             service.delete(id);
         }
         
-        return new ModelAndView("redirect:/marcas");
+        return new ModelAndView("redirect:/marcas?deletado=true");
     }
 }

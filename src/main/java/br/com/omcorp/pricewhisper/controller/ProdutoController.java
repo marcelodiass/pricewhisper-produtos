@@ -3,9 +3,9 @@ package br.com.omcorp.pricewhisper.controller;
 import br.com.omcorp.pricewhisper.model.Categoria;
 import br.com.omcorp.pricewhisper.model.Modelo;
 import br.com.omcorp.pricewhisper.model.Produto;
-import br.com.omcorp.pricewhisper.repository.CategoriaRepository;
 import br.com.omcorp.pricewhisper.repository.ModeloRepository;
 import br.com.omcorp.pricewhisper.repository.ProdutoRepository;
+import br.com.omcorp.pricewhisper.services.CategoriaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -23,7 +23,7 @@ public class ProdutoController {
     private ProdutoRepository repProdutos;
     
     @Autowired
-    private CategoriaRepository repCategorias;
+    private CategoriaService categoriaService;
     
     @Autowired
     private ModeloRepository repModelo;
@@ -40,7 +40,7 @@ public class ProdutoController {
 
     @GetMapping("/form_novo_produto")
     public ModelAndView formNovoProduto() {
-        List<Categoria> listaCategorias = repCategorias.findAll();
+        List<Categoria> listaCategorias = categoriaService.getAll();
         List<Modelo> listaModelos = repModelo.findAll();
 
         ModelAndView mv = new ModelAndView("form-produto");
@@ -59,7 +59,7 @@ public class ProdutoController {
         if (op.isPresent()) {
             Produto produto = op.get();
 
-            List<Categoria> listaCategorias = repCategorias.findAll();
+            List<Categoria> listaCategorias = categoriaService.getAll();
             List<Modelo> listaModelos = repModelo.findAll();
 
             ModelAndView mv = new ModelAndView("form-produto-editar");

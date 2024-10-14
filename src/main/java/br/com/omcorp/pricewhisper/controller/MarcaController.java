@@ -1,7 +1,7 @@
 package br.com.omcorp.pricewhisper.controller;
 
 import br.com.omcorp.pricewhisper.model.Marca;
-import br.com.omcorp.pricewhisper.repository.MarcaRepository;
+import br.com.omcorp.pricewhisper.services.MarcaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -16,11 +16,11 @@ import java.util.Optional;
 public class MarcaController {
 
     @Autowired
-    private MarcaRepository repMarca;
+    private MarcaService service;
 
     @GetMapping()
     public ModelAndView marcasList() {
-        List<Marca> marcas = repMarca.findAll();
+        List<Marca> marcas = service.getAll();
 
         ModelAndView mv = new ModelAndView("marcas-list");
         mv.addObject("marcas", marcas);
@@ -38,60 +38,55 @@ public class MarcaController {
 
     @GetMapping("/form_editar_marca/{id}")
     public ModelAndView formEditarMarca(@PathVariable Long id) {
+        Optional<Marca> op = service.getById(id);
 
-        Optional<Marca> op = repMarca.findById(id);
-
-        if (op.isPresent()) {
-            Marca marca = op.get();
-
-            ModelAndView mv = new ModelAndView("form-marca-editar");
-            mv.addObject("marca", marca);
-
-            return mv;
-        } else {
+        if (op.isEmpty()) {
             return new ModelAndView("redirect:/marcas");
         }
+
+        Marca marca = op.get();
+
+        ModelAndView mv = new ModelAndView("form-marca-editar");
+        mv.addObject("marca", marca);
+
+        return mv;
     }
 
     @PostMapping("/api/save")
     public ModelAndView saveMarca(@Valid Marca marca, BindingResult bd) {
         if (bd.hasErrors()) {
             return new ModelAndView("redirect:/marcas/form_nova_marca");
-        } else {
-            repMarca.save(marca);
-            return new ModelAndView("redirect:/marcas");
         }
+
+        service.save(marca);
+        return new ModelAndView("redirect:/marcas");
     }
 
     @PostMapping("/api/update/{id}")
     public ModelAndView updateMarca(@PathVariable Long id, @Valid Marca marca, BindingResult bd) {
         if (bd.hasErrors()) {
             return new ModelAndView("redirect:/marcas/form_nova_marca");
-        } else {
-            Optional<Marca> op = repMarca.findById(id);
-
-            if (op.isPresent()) {
-                Marca marcaNova = op.get();
-
-                marcaNova.setNome(marca.getNome());
-                marcaNova.setDescricao(marca.getDescricao());
-
-                repMarca.save(marcaNova);
-                return new ModelAndView("redirect:/marcas");
-            } else {
-                return new ModelAndView("redirect:/marcas/form_editar_marca/" + id);
-            }
-
         }
+
+        Optional<Marca> op = service.getById(id);
+
+        if (op.isEmpty()) {
+            return new ModelAndView("redirect:/marcas/form_editar_marca/" + id);
+        }
+
+        Marca marcaNova = op.get();
+        service.update(marcaNova, marca);
+        return new ModelAndView("redirect:/marcas");
     }
 
     @GetMapping("/api/delete/{id}")
     public ModelAndView deleteMarca(@PathVariable Long id) {
-        Optional<Marca> op = repMarca.findById(id);
+        Optional<Marca> op = service.getById(id);
 
         if (op.isPresent()) {
-            repMarca.deleteById(id);
+            service.delete(id);
         }
+        
         return new ModelAndView("redirect:/marcas");
     }
 }

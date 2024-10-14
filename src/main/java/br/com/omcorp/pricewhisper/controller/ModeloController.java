@@ -2,8 +2,8 @@ package br.com.omcorp.pricewhisper.controller;
 
 import br.com.omcorp.pricewhisper.model.Marca;
 import br.com.omcorp.pricewhisper.model.Modelo;
-import br.com.omcorp.pricewhisper.repository.MarcaRepository;
 import br.com.omcorp.pricewhisper.repository.ModeloRepository;
+import br.com.omcorp.pricewhisper.services.MarcaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -21,7 +21,7 @@ public class ModeloController {
     private ModeloRepository repModelo;
 
     @Autowired
-    private MarcaRepository repMarca;
+    private MarcaService marcaService;
 
     @GetMapping()
     public ModelAndView modelosList() {
@@ -35,7 +35,7 @@ public class ModeloController {
 
     @GetMapping("/form_novo_modelo")
     public ModelAndView formNovoModelo() {
-        List<Marca> marcas = repMarca.findAll();
+        List<Marca> marcas = marcaService.getAll();
 
         ModelAndView mv = new ModelAndView("form-modelo");
         mv.addObject("modelo", new Modelo());
@@ -52,7 +52,7 @@ public class ModeloController {
         if (op.isPresent()) {
             Modelo modelo = op.get();
 
-            List<Marca> marcas = repMarca.findAll();
+            List<Marca> marcas = marcaService.getAll();
 
             ModelAndView mv = new ModelAndView("form-modelo-editar");
             mv.addObject("modelo", modelo);

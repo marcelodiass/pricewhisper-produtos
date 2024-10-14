@@ -8,7 +8,7 @@
     <h3 class="text-center">Retornar</h3>
   </a>
 
-  <form th:object="${categoria}" th:action="@{/atualizar-categoria/{idCategoria}(idCategoria = ${categoria.id})}" method="post">
+  <form th:object="${categoria}" th:action="@{/categorias/api/update/{idCategoria}(idCategoria = ${categoria.id})}" method="post">
 
     <div class="row">
       <div class="col">

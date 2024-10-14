@@ -1,8 +1,6 @@
 package br.com.omcorp.pricewhisper.controller;
 
 import br.com.omcorp.pricewhisper.model.Categoria;
-import br.com.omcorp.pricewhisper.model.Marca;
-import br.com.omcorp.pricewhisper.model.Modelo;
 import br.com.omcorp.pricewhisper.repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,42 +12,32 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/categorias")
 public class CategoriaController {
 
     @Autowired
     private CategoriaRepository repCategoria;
 
-    @GetMapping("/categorias-interface")
-    public ModelAndView categoriaInterface() {
+    @GetMapping()
+    public ModelAndView categoriasList() {
         List<Categoria> categorias = repCategoria.findAll();
 
-        ModelAndView mv = new ModelAndView("categorias-interface");
+        ModelAndView mv = new ModelAndView("categorias-list");
         mv.addObject("categorias", categorias);
 
         return mv;
     }
 
-    @GetMapping("/nova-categoria")
-    public ModelAndView novaCategoria() {
+    @GetMapping("/form_nova_categoria")
+    public ModelAndView formNovaCategoria() {
         ModelAndView mv = new ModelAndView("form-categoria");
         mv.addObject("categoria", new Categoria());
 
         return mv;
     }
 
-    @PostMapping("/inserir-categoria")
-    public ModelAndView inserirCategoria(@Valid Categoria categoria, BindingResult bd) {
-        if (bd.hasErrors()) {
-            return novaCategoria();
-        } else {
-            repCategoria.save(categoria);
-            return categoriaInterface();
-        }
-    }
-
-    @GetMapping("/editar-categoria/{id}")
-    public ModelAndView editarCategoria(@PathVariable Long id) {
+    @GetMapping("/form_editar_categoria/{id}")
+    public ModelAndView formEditarCategoria(@PathVariable Long id) {
 
         Optional<Categoria> op = repCategoria.findById(id);
 
@@ -61,14 +49,24 @@ public class CategoriaController {
 
             return mv;
         } else {
-            return categoriaInterface();
+            return new ModelAndView("redirect:/categorias");
         }
     }
 
-    @PostMapping("/atualizar-categoria/{id}")
-    public ModelAndView atualizarCategoria(@PathVariable Long id, @Valid Categoria categoria, BindingResult bd) {
+    @PostMapping("/api/save")
+    public ModelAndView saveCategoria(@Valid Categoria categoria, BindingResult bd) {
         if (bd.hasErrors()) {
-            return novaCategoria();
+            return new ModelAndView("redirect:/form_nova_categoria");
+        } else {
+            repCategoria.save(categoria);
+            return new ModelAndView("redirect:/categorias");
+        }
+    }
+
+    @PostMapping("/api/update/{id}")
+    public ModelAndView updateCategoria(@PathVariable Long id, @Valid Categoria categoria, BindingResult bd) {
+        if (bd.hasErrors()) {
+            return new ModelAndView("redirect:/categorias/form_nova_categoria");
         } else {
             Optional<Categoria> op = repCategoria.findById(id);
 
@@ -79,24 +77,23 @@ public class CategoriaController {
                 categoriaNova.setDescricao(categoria.getDescricao());
 
                 repCategoria.save(categoriaNova);
-                return categoriaInterface();
+                return new ModelAndView("redirect:/categorias");
             } else {
-                return editarCategoria(id);
+                return new ModelAndView("redirect:/categorias/form_editar_categoria/" + id);
             }
 
         }
     }
 
-    @GetMapping("/deletar-categoria/{id}")
-    public ModelAndView deletarCategoria(@PathVariable Long id) {
+    @GetMapping("/api/delete/{id}")
+    public ModelAndView deleteCategoria(@PathVariable Long id) {
         Optional<Categoria> op = repCategoria.findById(id);
-
+        
         if (op.isPresent()) {
             repCategoria.deleteById(id);
-            return categoriaInterface();
-        } else {
-            return categoriaInterface();
         }
+        
+        return new ModelAndView("redirect:/categorias");
     }
 
 }

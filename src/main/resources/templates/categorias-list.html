@@ -24,10 +24,10 @@
           <td class="col" th:text="${categoria.id}"></td>
           <td class="col" th:text="${categoria.nome}"></td>
           <td class="col-2">
-            <a th:href="@{/editar-categoria/{idCategoria}(idCategoria = ${categoria.id})}">Editar</a>
+            <a th:href="@{/categorias/form_editar_categoria/{idCategoria}(idCategoria = ${categoria.id})}">Editar</a>
           </td>
           <td class="col-2">
-            <a th:href="@{/deletar-categoria/{idCategoria}(idCategoria = ${categoria.id})}">Deletar</a>
+            <a th:href="@{/categorias/api/delete/{idCategoria}(idCategoria = ${categoria.id})}">Deletar</a>
           </td>
         </tr>
         </tbody>
@@ -37,7 +37,7 @@
 
 
   <div class="row">
-    <a th:href="@{/nova-categoria}" class="btn btn-dark col-3">Nova Categoria</a>
+    <a th:href="@{/categorias/form_nova_categoria}" class="btn btn-dark col-3">Nova Categoria</a>
   </div>
 
 

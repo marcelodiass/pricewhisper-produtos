@@ -26,10 +26,10 @@
                     <td class="col" th:text="${modelo.nome}"></td>
                     <td class="col" th:text="${modelo.marca.nome}"></td>
                     <td class="col">
-                        <a th:href="@{/editar-modelo/{idModelo}(idModelo = ${modelo.id})}">Editar</a>
+                        <a th:href="@{/modelos/form_editar_modelo/{idModelo}(idModelo = ${modelo.id})}">Editar</a>
                     </td>
                     <td class="col">
-                        <a th:href="@{/deletar-modelo/{idModelo}(idModelo = ${modelo.id})}">Deletar</a>
+                        <a th:href="@{/modelos/api/delete/{idModelo}(idModelo = ${modelo.id})}">Deletar</a>
                     </td>
                 </tr>
                 </tbody>
@@ -39,7 +39,7 @@
 
 
     <div class="row">
-        <a th:href="@{/novo-modelo}" class="btn btn-dark col-3">Novo Modelo</a>
+        <a th:href="@{/modelos/form_novo_modelo}" class="btn btn-dark col-3">Novo Modelo</a>
     </div>
 
 

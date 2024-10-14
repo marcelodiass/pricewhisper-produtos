@@ -1,9 +1,7 @@
 package br.com.omcorp.pricewhisper.controller;
 
-import br.com.omcorp.pricewhisper.model.Categoria;
 import br.com.omcorp.pricewhisper.model.Marca;
 import br.com.omcorp.pricewhisper.model.Modelo;
-import br.com.omcorp.pricewhisper.model.Produto;
 import br.com.omcorp.pricewhisper.repository.MarcaRepository;
 import br.com.omcorp.pricewhisper.repository.ModeloRepository;
 import jakarta.validation.Valid;
@@ -16,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/modelos")
 public class ModeloController {
 
     @Autowired
@@ -25,18 +23,18 @@ public class ModeloController {
     @Autowired
     private MarcaRepository repMarca;
 
-    @GetMapping("/modelos-interface")
-    public ModelAndView modelosInterface() {
+    @GetMapping()
+    public ModelAndView modelosList() {
         List<Modelo> modelos = repModelo.findAll();
 
-        ModelAndView mv = new ModelAndView("modelos-interface");
+        ModelAndView mv = new ModelAndView("modelos-list");
         mv.addObject("modelos", modelos);
 
         return mv;
     }
 
-    @GetMapping("/novo-modelo")
-    public ModelAndView novoModelo() {
+    @GetMapping("/form_novo_modelo")
+    public ModelAndView formNovoModelo() {
         List<Marca> marcas = repMarca.findAll();
 
         ModelAndView mv = new ModelAndView("form-modelo");
@@ -46,18 +44,8 @@ public class ModeloController {
         return mv;
     }
 
-    @PostMapping("/inserir-modelo")
-    public ModelAndView inserirModelo(@Valid Modelo modelo, BindingResult bd) {
-        if (bd.hasErrors()) {
-            return novoModelo();
-        } else {
-            repModelo.save(modelo);
-            return modelosInterface();
-        }
-    }
-
-    @GetMapping("/editar-modelo/{id}")
-    public ModelAndView editarModelo(@PathVariable Long id) {
+    @GetMapping("/form_editar_modelo/{id}")
+    public ModelAndView formEditarModelo(@PathVariable Long id) {
 
         Optional<Modelo> op = repModelo.findById(id);
 
@@ -72,14 +60,24 @@ public class ModeloController {
 
             return mv;
         } else {
-            return modelosInterface();
+            return new ModelAndView("redirect:/modelos");
         }
     }
 
-    @PostMapping("/atualizar-modelo/{id}")
-    public ModelAndView atualizarModelo(@PathVariable Long id, @Valid Modelo modelo, BindingResult bd) {
+    @PostMapping("/api/save")
+    public ModelAndView saveModelo(@Valid Modelo modelo, BindingResult bd) {
         if (bd.hasErrors()) {
-            return novoModelo();
+            return new ModelAndView("redirect:/modelos/form_novo_modelo");
+        } else {
+            repModelo.save(modelo);
+            return new ModelAndView("redirect:/modelos");
+        }
+    }
+
+    @PostMapping("/api/update/{id}")
+    public ModelAndView updateModelo(@PathVariable Long id, @Valid Modelo modelo, BindingResult bd) {
+        if (bd.hasErrors()) {
+            return new ModelAndView("redirect:/modelos/form_novo_modelo");
         } else {
             Optional<Modelo> op = repModelo.findById(id);
 
@@ -91,23 +89,21 @@ public class ModeloController {
                 modeloNovo.setMarca(modelo.getMarca());
 
                 repModelo.save(modeloNovo);
-                return modelosInterface();
+                return new ModelAndView("redirect:/modelos");
             } else {
-                return editarModelo(id);
+                return new ModelAndView("redirect:/modelos/form_editar_modelo/" + id);
             }
 
         }
     }
 
-    @GetMapping("/deletar-modelo/{id}")
-    public ModelAndView deletarModelo(@PathVariable Long id) {
+    @GetMapping("/api/delete/{id}")
+    public ModelAndView deleteModelo(@PathVariable Long id) {
         Optional<Modelo> op = repModelo.findById(id);
 
         if (op.isPresent()) {
             repModelo.deleteById(id);
-            return modelosInterface();
-        } else {
-            return modelosInterface();
         }
+        return new ModelAndView("redirect:/modelos");
     }
 }

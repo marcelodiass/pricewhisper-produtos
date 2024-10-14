@@ -1,8 +1,6 @@
 package br.com.omcorp.pricewhisper.controller;
 
-import br.com.omcorp.pricewhisper.model.Categoria;
 import br.com.omcorp.pricewhisper.model.Marca;
-import br.com.omcorp.pricewhisper.model.Modelo;
 import br.com.omcorp.pricewhisper.repository.MarcaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,42 +12,32 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/marcas")
 public class MarcaController {
 
     @Autowired
     private MarcaRepository repMarca;
 
-    @GetMapping("/marcas-interface")
-    public ModelAndView marcasInterface() {
+    @GetMapping()
+    public ModelAndView marcasList() {
         List<Marca> marcas = repMarca.findAll();
 
-        ModelAndView mv = new ModelAndView("marcas-interface");
+        ModelAndView mv = new ModelAndView("marcas-list");
         mv.addObject("marcas", marcas);
 
         return mv;
     }
 
-    @GetMapping("/nova-marca")
-    public ModelAndView novaMarca() {
+    @GetMapping("/form_nova_marca")
+    public ModelAndView formNovaMarca() {
         ModelAndView mv = new ModelAndView("form-marca");
         mv.addObject("marca", new Marca());
 
         return mv;
     }
 
-    @PostMapping("/inserir-marca")
-    public ModelAndView inserirMarca(@Valid Marca marca, BindingResult bd) {
-        if (bd.hasErrors()) {
-            return novaMarca();
-        } else {
-            repMarca.save(marca);
-            return marcasInterface();
-        }
-    }
-
-    @GetMapping("/editar-marca/{id}")
-    public ModelAndView editarMarca(@PathVariable Long id) {
+    @GetMapping("/form_editar_marca/{id}")
+    public ModelAndView formEditarMarca(@PathVariable Long id) {
 
         Optional<Marca> op = repMarca.findById(id);
 
@@ -61,14 +49,24 @@ public class MarcaController {
 
             return mv;
         } else {
-            return marcasInterface();
+            return new ModelAndView("redirect:/marcas");
         }
     }
 
-    @PostMapping("/atualizar-marca/{id}")
-    public ModelAndView atualizarMarca(@PathVariable Long id, @Valid Marca marca, BindingResult bd) {
+    @PostMapping("/api/save")
+    public ModelAndView saveMarca(@Valid Marca marca, BindingResult bd) {
         if (bd.hasErrors()) {
-            return novaMarca();
+            return new ModelAndView("redirect:/marcas/form_nova_marca");
+        } else {
+            repMarca.save(marca);
+            return new ModelAndView("redirect:/marcas");
+        }
+    }
+
+    @PostMapping("/api/update/{id}")
+    public ModelAndView updateMarca(@PathVariable Long id, @Valid Marca marca, BindingResult bd) {
+        if (bd.hasErrors()) {
+            return new ModelAndView("redirect:/marcas/form_nova_marca");
         } else {
             Optional<Marca> op = repMarca.findById(id);
 
@@ -79,23 +77,21 @@ public class MarcaController {
                 marcaNova.setDescricao(marca.getDescricao());
 
                 repMarca.save(marcaNova);
-                return marcasInterface();
+                return new ModelAndView("redirect:/marcas");
             } else {
-                return editarMarca(id);
+                return new ModelAndView("redirect:/marcas/form_editar_marca/" + id);
             }
 
         }
     }
 
-    @GetMapping("/deletar-marca/{id}")
-    public ModelAndView deletarMarca(@PathVariable Long id) {
+    @GetMapping("/api/delete/{id}")
+    public ModelAndView deleteMarca(@PathVariable Long id) {
         Optional<Marca> op = repMarca.findById(id);
 
         if (op.isPresent()) {
             repMarca.deleteById(id);
-            return marcasInterface();
-        } else {
-            return marcasInterface();
         }
+        return new ModelAndView("redirect:/marcas");
     }
 }

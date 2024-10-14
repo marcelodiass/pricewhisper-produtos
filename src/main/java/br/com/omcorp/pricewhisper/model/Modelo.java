@@ -2,6 +2,7 @@ package br.com.omcorp.pricewhisper.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "MODELO")
@@ -11,6 +12,7 @@ public class Modelo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Não é possível cadastrar um modelo sem nome!")
     private String nome;
 
     private String descricao;

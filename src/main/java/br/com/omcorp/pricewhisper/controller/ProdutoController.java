@@ -73,9 +73,17 @@ public class ProdutoController {
     }
 
     @PostMapping("/api/save")
-    public ModelAndView saveProduto(@Valid Produto produto, BindingResult bd) {
+    public ModelAndView saveProduto(@Valid @ModelAttribute("produto") Produto produto, BindingResult bd) {
         if (bd.hasErrors()) {
-            return new ModelAndView("redirect:/produtos/form_novo_produto");
+            List<Categoria> listaCategorias = categoriaService.getAll();
+            List<Modelo> listaModelos = modeloService.getAll();
+
+            ModelAndView mv = new ModelAndView("form-produto");
+            mv.addObject("produto", produto);
+            mv.addObject("categorias", listaCategorias);
+            mv.addObject("modelos", listaModelos);
+
+            return mv;
         }
         
         service.save(produto);
@@ -83,9 +91,17 @@ public class ProdutoController {
     }
 
     @PostMapping("/api/update/{id}")
-    public ModelAndView updateProduto(@PathVariable Long id, @Valid Produto produto, BindingResult bd) {
+    public ModelAndView updateProduto(@PathVariable Long id, @Valid @ModelAttribute("produto") Produto produto, BindingResult bd) {
         if (bd.hasErrors()) {
-            return new ModelAndView("redirect:/produtos/form_novo_produto");
+            List<Categoria> listaCategorias = categoriaService.getAll();
+            List<Modelo> listaModelos = modeloService.getAll();
+
+            ModelAndView mv = new ModelAndView("form-produto-editar");
+            mv.addObject("produto", produto);
+            mv.addObject("categorias", listaCategorias);
+            mv.addObject("modelos", listaModelos);
+
+            return mv;
         }
         
         Optional<Produto> op = service.getById(id);

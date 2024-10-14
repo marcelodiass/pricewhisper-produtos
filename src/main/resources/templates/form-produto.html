@@ -10,33 +10,39 @@
     <div class="row">
       <div class="col">
         <label class="form-label" for="nome">Nome</label>
-        <input type="text" id="nome" class="form-control" th:field="*{nome}">
+        <input type="text" id="nome" class="form-control" th:field="*{nome}" th:errorclass="is-invalid">
+        <div class="invalid-feedback" th:errors="*{nome}"></div>
       </div>
       <div class="col">
         <label class="form-label" for="descricao">Descrição</label>
-        <textarea class="form-control" id="descricao" rows="3" th:field="*{descricao}"></textarea>
+        <textarea class="form-control" id="descricao" rows="3" th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
+        <div class="invalid-feedback" th:errors="*{descricao}"></div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-2">
         <label class="form-label" for="preco-custo">Preço de Custo</label>
-        <input type="text" id="preco-custo" class="form-control" th:field="*{precoCusto}">
+        <input type="text" id="preco-custo" class="form-control" th:field="*{precoCusto}" th:errorclass="is-invalid">
+        <div class="invalid-feedback" th:errors="*{precoCusto}"></div>
       </div>
 
       <div class="col-2">
         <label class="form-label" for="preco-venda">Preço de Venda</label>
-        <input type="text" id="preco-venda" class="form-control" th:field="*{precoVenda}">
+        <input type="text" id="preco-venda" class="form-control" th:field="*{precoVenda}" th:errorclass="is-invalid">
+        <div class="invalid-feedback" th:errors="*{precoVenda}"></div>
       </div>
 
       <div class="col-2">
         <label class="form-label" for="preco-minimo">Preço Mínimo</label>
-        <input type="text" id="preco-minimo" class="form-control" th:field="*{precoMinimo}">
+        <input type="text" id="preco-minimo" class="form-control" th:field="*{precoMinimo}" th:errorclass="is-invalid">
+        <div class="invalid-feedback" th:errors="*{precoMinimo}"></div>
       </div>
 
       <div class="col">
         <label class="form-label" for="estoque">Estoque</label>
-        <input type="text" id="estoque" class="form-control" th:field="*{estoque}">
+        <input type="text" id="estoque" class="form-control" th:field="*{estoque}" th:errorclass="is-invalid">
+        <div class="invalid-feedback" th:errors="*{estoque}"></div>
       </div>
     </div>
 

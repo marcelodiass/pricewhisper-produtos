@@ -10,11 +10,13 @@
     <div class="row">
       <div class="col">
         <label class="form-label" for="nome">Nome</label>
-        <input type="text" id="nome" class="form-control" th:field="*{nome}">
+        <input type="text" id="nome" class="form-control" th:field="*{nome}" th:errorclass="is-invalid">
+        <div class="invalid-feedback" th:errors="*{nome}"></div>
       </div>
       <div class="col">
         <label class="form-label" for="descricao">Descrição</label>
-        <textarea class="form-control" id="descricao" rows="3" th:field="*{descricao}"></textarea>
+        <textarea class="form-control" id="descricao" rows="3" th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
+        <div class="invalid-feedback" th:errors="*{descricao}"></div>
       </div>
     </div>
     

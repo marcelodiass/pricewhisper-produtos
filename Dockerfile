@@ -20,7 +20,7 @@ COPY src ./src
 RUN mvn clean package
 
 # Copia o arquivo JAR gerado para o diretório de trabalho
-COPY target/*.jar app.jar
+COPY target/pricewhisper-0.0.1-SNAPSHOT.jar app.jar
 
 # Expõe a porta que a aplicação irá rodar
 EXPOSE 80

@@ -1,10 +1,7 @@
 package br.com.omcorp.pricewhisper.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@Data
 public class Usuario {
 
     @Id
@@ -22,9 +20,5 @@ public class Usuario {
     private String nome;
     private String username;
     private String password;
-    @JoinTable(name = "usuario_roles",
-        joinColumns = @JoinColumn(name = "id_usuario"),
-        inverseJoinColumns = @JoinColumn(name = "id_role")
-    )
-    private Set<Role> roles = new HashSet<>();
+    private String role;
 }

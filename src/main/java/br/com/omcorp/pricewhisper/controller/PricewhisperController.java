@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class PricewhisperController {
     
     @GetMapping
-    public ModelAndView index() {
+    public ModelAndView home() {
         return new ModelAndView("index");
     }
     

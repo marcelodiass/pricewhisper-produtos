@@ -12,6 +12,14 @@
       Cadastro feito com sucesso!
     </div>
 
+    <div th:if="${param.error}" style="color: red">
+      Erro ao efetuar login.
+    </div>
+
+    <div th:if="${param.logout}" style="color: green">
+      Logout efetuado com sucesso!
+    </div>
+
     <form th:action="@{/login}" method="post">
       <div class="col-6 mb-3">
         <label for="username">Username</label>

@@ -1,7 +1,7 @@
 package br.com.omcorp.pricewhisper.services;
 
 import br.com.omcorp.pricewhisper.model.Usuario;
-import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
@@ -20,13 +21,14 @@ public class CustomUserDetailService implements UserDetailsService {
         Usuario byUsername = usuarioService.findByUsername(username);
 
         if (byUsername == null) {
+            log.error("Erro ao encontrar usuário.");
             return null;
         }
 
         return User.builder()
                 .username(byUsername.getUsername())
                 .password(byUsername.getPassword())
-                .roles(byUsername.getRole())
+                .roles(byUsername.getRole().name())
                 .build();
     }
 }

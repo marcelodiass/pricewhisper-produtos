@@ -6,7 +6,7 @@
 <header th:replace="~{fragmentos :: navbar}"></header>
 
 <div class="container">
-  <form th:object="${marca}" action="/marcas/api/save" method="post">
+  <form th:object="${marca}" th:action="@{/marcas/api/save}" method="post">
     <div class="row">
       <div class="col">
         <label class="form-label" for="nome">Nome</label>

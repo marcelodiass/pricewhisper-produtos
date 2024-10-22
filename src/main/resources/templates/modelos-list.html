@@ -10,8 +10,9 @@
         <div id="alert-cadastrar-modelo-sucesso"
              class="alert alert-success"
              th:if="${param.registrado}"
-             role="alert">
-            Modelo cadastrado com sucesso!
+             role="alert"
+             th:text="#{success.model.create}"
+        >
         </div>
     </div>
 
@@ -19,8 +20,9 @@
         <div id="alert-atualizar-modelo-sucesso"
              class="alert alert-success"
              th:if="${param.atualizado}"
-             role="alert">
-            Modelo atualizado com sucesso!
+             role="alert"
+             th:text="#{success.model.update}"
+        >
         </div>
     </div>
 
@@ -28,8 +30,9 @@
         <div id="alert-deletar-modelo-sucesso"
              class="alert alert-success"
              th:if="${param.deletado}"
-             role="alert">
-            Modelo deletado com sucesso!
+             role="alert"
+             th:text="#{success.model.delete}"
+        >
         </div>
     </div>
     
@@ -39,10 +42,10 @@
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Marca</th>
-                    <th scope="col">Editar</th>
-                    <th scope="col">Deletar</th>
+                    <th scope="col" th:text="#{name}"></th>
+                    <th scope="col" th:text="#{brand}"></th>
+                    <th scope="col" th:text="#{edit}"></th>
+                    <th scope="col" th:text="#{delete}"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,10 +54,10 @@
                     <td class="col" th:text="${modelo.nome}"></td>
                     <td class="col" th:text="${modelo.marca.nome}"></td>
                     <td class="col">
-                        <a th:href="@{/modelos/form_editar_modelo/{idModelo}(idModelo = ${modelo.id})}">Editar</a>
+                        <a th:href="@{/modelos/form_editar_modelo/{idModelo}(idModelo = ${modelo.id})}" th:text="#{edit}"></a>
                     </td>
                     <td class="col">
-                        <a th:href="@{/modelos/api/delete/{idModelo}(idModelo = ${modelo.id})}">Deletar</a>
+                        <a th:href="@{/modelos/api/delete/{idModelo}(idModelo = ${modelo.id})}" th:text="#{delete}"></a>
                     </td>
                 </tr>
                 </tbody>
@@ -63,7 +66,7 @@
     </div>
     
     <div class="row">
-        <a th:href="@{/modelos/form_novo_modelo}" class="btn btn-primary col-3">Novo Modelo</a>
+        <a th:href="@{/modelos/form_novo_modelo}" class="btn btn-primary col-3" th:text="#{new.model}"></a>
     </div>
 </div>
 

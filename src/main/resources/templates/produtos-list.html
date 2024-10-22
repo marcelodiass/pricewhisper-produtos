@@ -10,8 +10,9 @@
     <div id="alert-cadastrar-produto-sucesso"
          class="alert alert-success"
          th:if="${param.registrado}"
-         role="alert">
-      Produto cadastrado com sucesso!
+         role="alert"
+         th:text="#{success.product.create}"
+    >
     </div>
   </div>
 
@@ -19,8 +20,9 @@
     <div id="alert-atualizar-produto-sucesso"
          class="alert alert-success"
          th:if="${param.atualizado}"
-         role="alert">
-      Produto atualizado com sucesso!
+         role="alert"
+         th:text="#{success.product.update}"
+    >
     </div>
   </div>
 
@@ -28,8 +30,9 @@
     <div id="alert-deletar-produto-sucesso"
          class="alert alert-success"
          th:if="${param.deletado}"
-         role="alert">
-      Produto deletado com sucesso!
+         role="alert"
+         th:text="#{success.product.delete}"
+    >
     </div>
   </div>
   
@@ -39,12 +42,12 @@
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Preço Custo</th>
-            <th scope="col">Estoque</th>
-            <th scope="col">Categoria</th>
-            <th scope="col">Editar</th>
-            <th scope="col">Deletar</th>
+            <th scope="col" th:text="#{name}"></th>
+            <th scope="col" th:text="#{price.cost}"></th>
+            <th scope="col" th:text="#{stock}"></th>
+            <th scope="col" th:text="#{category}"></th>
+            <th scope="col" th:text="#{edit}"></th>
+            <th scope="col" th:text="#{delete}"></th>
           </tr>
         </thead>
         <tbody>
@@ -55,10 +58,10 @@
             <td class="col-3" th:text="${produto.estoque}"></td>
             <td class="col-3" th:text="${produto.categoria.nome}"></td>
             <td class="col-3">
-              <a th:href="@{/produtos/form_editar_produto/{idProduto}(idProduto = ${produto.id})}">Editar</a>
+              <a th:href="@{/produtos/form_editar_produto/{idProduto}(idProduto = ${produto.id})}" th:text="#{edit}"></a>
             </td>
             <td class="col-3">
-              <a  th:href="@{/produtos/api/delete/{idProduto}(idProduto = ${produto.id})}">Deletar</a>
+              <a  th:href="@{/produtos/api/delete/{idProduto}(idProduto = ${produto.id})}" th:text="#{delete}"></a>
             </td>
           </tr>
         </tbody>
@@ -67,7 +70,7 @@
   </div>
 
   <div class="row">
-    <a th:href="@{/produtos/form_novo_produto}" class="btn btn-primary col-3">Novo Produto</a>
+    <a th:href="@{/produtos/form_novo_produto}" class="btn btn-primary col-3" th:text="#{new.product}"></a>
   </div>
 </div>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="pt">
 <head th:replace="~{fragmentos :: cabecalho('Price Whisper')}"></head>
 <body>
 
@@ -8,15 +8,16 @@
 <main class="container">
     <div class="jumbotron my-5">
         <h1 class="display-4 text-center">Price Whisper</h1>
-        <h3 class="lead text-center">Descubra o melhor preço para o seu produto com IA!</h3>
-        <h3 class="lead text-center">Seja bem-vindo <span th:text="${username}" class="text-primary"></span></h3>
+        <h3 class="lead text-center" th:text="#{description}"></h3>
+        <h3 class="lead text-center" th:text="#{welcome}"></h3>
+        <h3 class="lead text-center text-primary" th:text="${username}"></h3>
     </div>
 
     <div class="d-grid gap-2 col-6 mx-auto">
-        <a th:replace="~{fragmentos :: btn-link('/produtos', 'Visualizar Produtos')}"></a>
-        <a th:replace="~{fragmentos :: btn-link('/marcas', 'Visualizar Marcas')}"></a>
-        <a th:replace="~{fragmentos :: btn-link('/modelos', 'Visualizar Modelos')}"></a>
-        <a th:replace="~{fragmentos :: btn-link('/categorias', 'Visualizar Categorias')}"></a>
+        <a th:replace="~{fragmentos :: btn-link('/produtos', #{visualize.products})}"></a>
+        <a th:replace="~{fragmentos :: btn-link('/marcas', #{visualize.brands})}"></a>
+        <a th:replace="~{fragmentos :: btn-link('/modelos', #{visualize.models})}"></a>
+        <a th:replace="~{fragmentos :: btn-link('/categorias', #{visualize.categories})}"></a>
     </div>
 </main>
 

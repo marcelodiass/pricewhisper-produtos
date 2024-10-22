@@ -9,12 +9,12 @@
   <form th:object="${modelo}" th:action="@{/modelos/api/save}" method="post">
     <div class="row">
       <div class="col">
-        <label class="form-label" for="nome">Nome</label>
+        <label class="form-label" for="nome" th:text="#{name}"></label>
         <input type="text" id="nome" class="form-control" th:field="*{nome}" th:errorclass="is-invalid">
         <div class="invalid-feedback" th:errors="*{nome}"></div>
       </div>
       <div class="col">
-        <label class="form-label" for="descricao">Descrição</label>
+        <label class="form-label" for="descricao" th:text="#{description.form}"></label>
         <textarea class="form-control" id="descricao" rows="3" th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
         <div class="invalid-feedback" th:errors="*{descricao}"></div>
       </div>
@@ -22,7 +22,7 @@
 
     <div class="row">
       <div class="col-6">
-        <label class="form-label" for="marca">Marca</label>
+        <label class="form-label" for="marca" th:text="#{brand}"></label>
         <select class="form-select" th:field="*{marca}" id="marca">
           <option th:each="marca : ${marcas}" th:value="${marca.id}" th:text="${marca.nome}">
         </select>
@@ -30,7 +30,7 @@
     </div>
     
     <div class="row mt-3 ">
-      <button type="submit" class="btn btn-primary col-3">Cadastrar</button>
+      <button type="submit" class="btn btn-primary col-3" th:text="#{create}"></button>
     </div>
   </form>
 </div>

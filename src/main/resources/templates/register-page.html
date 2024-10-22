@@ -7,12 +7,12 @@
     <header th:replace="~{fragmentos :: navbar}"></header>
 
     <div class="container">
-        <h1>Cadastro</h1>
+        <h1 th:text="#{signup}"></h1>
 
         <form th:action="@{/register}" method="post" th:object="${usuario}">
             <div class="row">
                 <div class="col-6">
-                    <label for="nome">Nome</label>
+                    <label for="nome" th:text="#{name}"></label>
                     <input class="form-control" name="nome" type="text" id="nome">
                 </div>
 
@@ -23,12 +23,12 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <label for="password">Senha</label>
+                    <label for="password" th:text="#{password}"></label>
                     <input class="form-control" name="password" type="password" id="password">
                 </div>
             </div>
 
-            <button class="col-3 btn btn-primary mt-3" type="submit">Cadastrar</button>
+            <button class="col-3 btn btn-primary mt-3" type="submit" th:text="#{signup}"></button>
         </form>
     </div>
 

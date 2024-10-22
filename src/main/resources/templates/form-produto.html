@@ -9,12 +9,12 @@
   <form th:object="${produto}" th:action="@{/produtos/api/save}" method="post">
     <div class="row">
       <div class="col">
-        <label class="form-label" for="nome">Nome</label>
+        <label class="form-label" for="nome" th:text="#{name}"></label>
         <input type="text" id="nome" class="form-control" th:field="*{nome}" th:errorclass="is-invalid">
         <div class="invalid-feedback" th:errors="*{nome}"></div>
       </div>
       <div class="col">
-        <label class="form-label" for="descricao">Descrição</label>
+        <label class="form-label" for="descricao" th:text="#{description.form}"></label>
         <textarea class="form-control" id="descricao" rows="3" th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
         <div class="invalid-feedback" th:errors="*{descricao}"></div>
       </div>
@@ -22,25 +22,25 @@
 
     <div class="row">
       <div class="col-2">
-        <label class="form-label" for="preco-custo">Preço de Custo</label>
+        <label class="form-label" for="preco-custo" th:text="#{price.cost}"></label>
         <input type="text" id="preco-custo" class="form-control" th:field="*{precoCusto}" th:errorclass="is-invalid">
         <div class="invalid-feedback" th:errors="*{precoCusto}"></div>
       </div>
 
       <div class="col-2">
-        <label class="form-label" for="preco-venda">Preço de Venda</label>
+        <label class="form-label" for="preco-venda" th:text="#{price.sale}"></label>
         <input type="text" id="preco-venda" class="form-control" th:field="*{precoVenda}" th:errorclass="is-invalid">
         <div class="invalid-feedback" th:errors="*{precoVenda}"></div>
       </div>
 
       <div class="col-2">
-        <label class="form-label" for="preco-minimo">Preço Mínimo</label>
+        <label class="form-label" for="preco-minimo" th:text="#{price.min}"></label>
         <input type="text" id="preco-minimo" class="form-control" th:field="*{precoMinimo}" th:errorclass="is-invalid">
         <div class="invalid-feedback" th:errors="*{precoMinimo}"></div>
       </div>
 
       <div class="col">
-        <label class="form-label" for="estoque">Estoque</label>
+        <label class="form-label" for="estoque" th:text="#{stock}"></label>
         <input type="text" id="estoque" class="form-control" th:field="*{estoque}" th:errorclass="is-invalid">
         <div class="invalid-feedback" th:errors="*{estoque}"></div>
       </div>
@@ -48,13 +48,13 @@
 
     <div class="row">
       <div class="col">
-        <label class="form-label" for="categoria">Categoria</label>
+        <label class="form-label" for="categoria" th:text="#{category}"></label>
         <select class="form-select" th:field="*{categoria}" id="categoria">
           <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.nome}">
         </select>
       </div>
       <div class="col">
-        <label class="form-label" for="modelo">Modelo</label>
+        <label class="form-label" for="modelo" th:text="#{model}"></label>
         <select class="form-select" th:field="*{categoria}" id="modelo">
           <option th:each="modelo : ${modelos}" th:value="${modelo.id}" th:text="${modelo.nome}">
         </select>
@@ -62,7 +62,7 @@
     </div>
 
     <div class="row mt-3 ">
-      <button type="submit" class="btn btn-primary col-3">Salvar</button>
+      <button type="submit" class="btn btn-primary col-3" th:text="#{create}"></button>
     </div>
   </form>
 </div>

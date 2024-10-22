@@ -10,8 +10,9 @@
     <div id="alert-cadastrar-marca-sucesso"
          class="alert alert-success"
          th:if="${param.registrado}"
-         role="alert">
-      Marca cadastrada com sucesso!
+         role="alert"
+         th:text="#{success.brand.create}"
+    >
     </div>
   </div>
 
@@ -19,8 +20,9 @@
     <div id="alert-atualizar-marca-sucesso"
          class="alert alert-success"
          th:if="${param.atualizado}"
-         role="alert">
-      Marca atualizada com sucesso!
+         role="alert"
+         th:text="#{success.brand.update}"
+    >
     </div>
   </div>
 
@@ -28,8 +30,9 @@
     <div id="alert-deletar-marca-sucesso"
          class="alert alert-success"
          th:if="${param.deletado}"
-         role="alert">
-      Marca deletada com sucesso!
+         role="alert"
+         th:text="#{success.brand.delete}"
+    >
     </div>
   </div>
   
@@ -39,9 +42,9 @@
         <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Editar</th>
-          <th scope="col">Deletar</th>
+          <th scope="col" th:text="#{name}"></th>
+          <th scope="col" th:text="#{edit}"></th>
+          <th scope="col" th:text="#{delete}"></th>
         </tr>
         </thead>
         <tbody>
@@ -49,10 +52,10 @@
           <td class="col" th:text="${marca.id}"></td>
           <td class="col" th:text="${marca.nome}"></td>
           <td class="col-2">
-            <a th:href="@{/marcas/form_editar_marca/{idMarca}(idMarca = ${marca.id})}">Editar</a>
+            <a th:href="@{/marcas/form_editar_marca/{idMarca}(idMarca = ${marca.id})}" th:text="#{edit}"></a>
           </td>
           <td class="col-2">
-            <a th:href="@{/marcas/api/delete/{idMarca}(idMarca = ${marca.id})}">Deletar</a>
+            <a th:href="@{/marcas/api/delete/{idMarca}(idMarca = ${marca.id})}" th:text="#{delete}"></a>
           </td>
         </tr>
         </tbody>
@@ -61,7 +64,7 @@
   </div>
   
   <div class="row">
-    <a th:href="@{/marcas/form_nova_marca}" class="btn btn-primary col-3">Nova Marca</a>
+    <a th:href="@{/marcas/form_nova_marca}" class="btn btn-primary col-3" th:text="#{new.brand}"></a>
   </div>
 </div>
 

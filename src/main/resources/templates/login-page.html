@@ -8,16 +8,16 @@
   <div class="container">
     <h1>Login</h1>
 
-    <div th:if="${param.success}" style="color: green">
-      Cadastro feito com sucesso!
+    <div th:if="${param.success}" style="color: green" th:text="#{success.signup}">
+
     </div>
 
-    <div th:if="${param.error}" style="color: red">
-      Erro ao efetuar login.
+    <div th:if="${param.error}" style="color: red" th:text="#{error.login}">
+
     </div>
 
-    <div th:if="${param.logout}" style="color: green">
-      Logout efetuado com sucesso!
+    <div th:if="${param.logout}" style="color: green" th:text="#{success.logout}">
+
     </div>
 
     <form th:action="@{/login}" method="post">
@@ -26,11 +26,11 @@
         <input class="form-control" name="username" type="text" id="username">
       </div>
       <div class="col-6">
-        <label for="password">Senha</label>
+        <label for="password" th:text="#{password}"></label>
         <input class="form-control" name="password" type="password" id="password">
       </div>
       <br>
-      <button class="btn btn-primary col-3" type="submit">Entrar</button>
+      <button class="btn btn-primary col-3" type="submit">Login</button>
     </form>
   </div>
 

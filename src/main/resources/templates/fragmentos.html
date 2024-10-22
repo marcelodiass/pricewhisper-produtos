@@ -31,31 +31,36 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav bd-navbar flex-row mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/produtos">Produtos</a>
+                    <a class="nav-link text-white" href="/produtos" th:text="#{products}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/modelos">Modelos</a>
+                    <a class="nav-link text-white" href="/modelos" th:text="#{models}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/marcas">Marcas</a>
+                    <a class="nav-link text-white" href="/marcas" th:text="#{brands}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/categorias">Categorias</a>
+                    <a class="nav-link text-white" href="/categorias" th:text="#{categories}"></a>
                 </li>
             </ul>
             <ul class="navbar-nav bd-navbar flex-row ms-auto">
-                <li class="nav-item ms-auto">
+                <li class="nav-item ms-auto" sec:authorize="!isAuthenticated()">
                     <a class="nav-link text-white" href="/login">Login</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/register">Cadastrar</a>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link text-white" href="/register" th:text="#{signup}"></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}" method="post">
-                        <button type="submit" class="nav-link text-white" style="background:none; border:none; cursor:pointer;">
-                            Logout
+                        <button type="submit" class="nav-link text-white" style="background:none; border:none; cursor:pointer;" th:text="#{logout}">
                         </button>
                     </form>
+                </li>
+                <li class="nav-item ms-auto">
+                    <a th:href="@{/?lang=pt}" class="nav-link text-white">PT</a>
+                </li>
+                <li class="nav-item ms-auto">
+                    <a th:href="@{/?lang=en}" class="nav-link text-white">EN</a>
                 </li>
             </ul>
         </div>

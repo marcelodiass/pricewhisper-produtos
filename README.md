@@ -12,9 +12,9 @@
 ## Tabelas DDL
 [Clique aqui para acessar o arquivo txt das tabelas DDL](docs/tabelas_ddl.txt)
 
-## [Vídeo Demo](https://youtu.be/xMzcw9Uim-g)
+## [Vídeo Demo](https://youtu.be/QVZ1t6QxIR0)
 
-https://youtu.be/xMzcw9Uim-g
+[https://youtu.be/xMzcw9Uim-g](https://youtu.be/QVZ1t6QxIR0)
 
 ## Fazendo deploy do projeto via ACR e ACI
 
